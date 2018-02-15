@@ -1,0 +1,12 @@
+[Unit]
+Description=Runs postgresql container number %i
+After=docker.service
+
+[Service]
+Type=simple
+ExecStart=/bin/docker start -a postgresql-%i
+ExecStop=/bin/docker stop postgresql-%i
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
