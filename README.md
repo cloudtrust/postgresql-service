@@ -4,7 +4,7 @@
 ```Bash
 cd /cloudtrust
 #Get the repo
-git clone ssh://git@git.elcanet.local:7999/cloudtrust/postgresql-service.git
+git clone git@github:cloudtrust/postgresql-service.git
 cd postgresql-service
 
 #install systemd unit file
@@ -14,13 +14,11 @@ mkdir build_context
 cp cloudtrust-postgresql.dockerfile build_context/
 cd build_context
 
-#Build the dockerfile for DEV environment
-docker build --build-arg environment=DEV -t cloudtrust-postgresql:f27 -t cloudtrust-postgresql -f cloudtrust-postgresql.dockerfile .
+#Build the dockerfile 
+docker build --build-arg postgresql_service_git_tag=${GIT_TAG} -t cloudtrust-postgresql:${GIT_TAG} -f cloudtrust-postgresql.dockerfile .
+
+docker build --build-arg environment=${ENVIRONMENT} --build-arg config_repository=${CONFIG_REPO} --build-arg branch=${BRANCH} -t cloudtrust-postgresql -f cloudtrust-postgresql-config.dockerfile .
 
 #create container 1
-docker create -p 5432:5432 --tmpfs /tmp --tmpfs /run -v /sys/fs/cgroup:/sys/fs/cgroup:ro --name postgresql cloudtrust-postgresql
-
-systemctl daemon-reload
-#start container DEV1
-systemctl start cloudtrust-postgresql@1
+docker run -d -p 5432:5432 --tmpfs /tmp --tmpfs /run -v /sys/fs/cgroup:/sys/fs/cgroup:ro --name postgresql cloudtrust-postgresql
 ```
