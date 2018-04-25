@@ -31,8 +31,7 @@ WORKDIR /cloudtrust/config
 RUN git checkout ${config_git_tag}
 
 WORKDIR /cloudtrust/config
-RUN install -v -m0644 -o root -g root deploy/etc/systemd/system/postgresql_init.service /etc/systemd/system/postgresql_init.service && \
-    install -d -v -m0755 /cloudtrust/postgresql-scripts && \
+RUN install -d -v -m0755 /cloudtrust/postgresql-scripts && \
     install -v -m0750 -o postgres -g postgres deploy/cloudtrust/postgresql-scripts/* /cloudtrust/postgresql-scripts/ && \
     install -v -m0640 -o postgres -g postgres deploy/var/lib/pgsql/postgres.pwd /var/lib/pgsql/postgres.pwd
 
@@ -50,7 +49,6 @@ RUN install -v -m0644 deploy/etc/security/limits.d/* /etc/security/limits.d/ && 
     chown postgres:postgres -R /var/lib/pgsql
 
 RUN systemctl enable postgresql.service && \
-    systemctl enable postgresql_init && \
     systemctl enable monit.service
 
 VOLUME ["/var/lib/pgsql"]
