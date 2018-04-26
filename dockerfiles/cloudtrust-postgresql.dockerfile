@@ -6,7 +6,8 @@ ARG config_git_tag
 ARG config_repo
 
 # Install Postgresql and other required packages
-RUN dnf -y install postgresql-server postgresql-contrib findutils monit git python3-pip && \
+RUN dnf update -y && \
+    dnf -y install postgresql-server postgresql-contrib findutils monit git python3-pip && \
     dnf clean all
 
 # Get the repositories
