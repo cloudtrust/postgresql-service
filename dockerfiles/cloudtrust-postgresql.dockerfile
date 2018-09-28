@@ -5,9 +5,13 @@ ARG postgresql_tools_git_tag
 ARG config_git_tag
 ARG config_repo
 
+ARG postgresql-server_version=9.6.10-1.fc27
+ARG postgresql-contrib_version=9.6.10-1.fc27
+ARG python3-pip_version=9.0.3-2.fc27
+
 # Install Postgresql and other required packages
 RUN dnf update -y && \
-    dnf -y install postgresql-server postgresql-contrib findutils monit git python3-pip && \
+    dnf -y install postgresql-server-$postgresql-server_version postgresql-contrib-$postgresql-contrib_version findutils monit git python3-pip-$python3-pip_version && \
     dnf clean all
 
 # Get the repositories
